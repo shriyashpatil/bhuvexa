@@ -110,10 +110,10 @@
     padding:16px 0; border-bottom-color:var(--line);
   }
   .nav{ display:flex; align-items:center; justify-content:space-between; }
-  .brand{ display:flex; align-items:center; gap:12px; line-height:1; color:var(--paper); transition:color .4s ease; }
+  .brand{ display:flex; align-items:center; gap:13px; line-height:1; color:var(--paper); transition:color .4s ease; }
   header.site.solid .brand{ color:var(--ink); }
-  .brand-icon{ width:32px; height:32px; flex-shrink:0; color:inherit; }
-  .brand-text{ display:flex; flex-direction:column; }
+  .brand-icon{ width:44px; height:44px; flex-shrink:0; color:inherit; display:block; }
+  .brand-text{ display:flex; flex-direction:column; justify-content:center; }
   .brand .word{ font-family:'Bodoni Moda', serif; font-weight:500; font-size:23px; font-style:italic; }
   .brand .tag{ font-family:'Manrope',sans-serif; font-size:9px; font-weight:700; letter-spacing:0.18em; opacity:0.6; margin-top:5px; text-transform:uppercase; }
   nav.links{ display:flex; gap:38px; font-size:13px; }
@@ -181,10 +181,10 @@
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
   }
   .hero-home-mark{
-    position:absolute; right:-60px; bottom:-40px; width:560px; height:560px;
-    color:var(--paper); opacity:0.05; pointer-events:none; z-index:1;
+    position:absolute; left:0; right:0; bottom:0; width:100%; height:220px;
+    color:var(--paper); opacity:0.09; pointer-events:none; z-index:1;
   }
-  @media (max-width:760px){ .hero-home-mark{ width:340px; height:340px; right:-80px; bottom:-30px; } }
+  @media (max-width:760px){ .hero-home-mark{ height:140px; } }
   .hero-top{ padding:150px 0 0; position:relative; z-index:2; }
   .hero-eyebrow{ display:flex; align-items:center; gap:14px; color:var(--paper-soft); }
   .hero-eyebrow::before{ content:""; width:34px; height:1px; background:var(--paper-soft); }
@@ -385,6 +385,30 @@
       <line x1="10" y1="54" x2="90" y2="54" stroke="currentColor" stroke-width="4.2" stroke-linecap="round"/>
       <rect x="41" y="34" width="18" height="20" fill="none" stroke="currentColor" stroke-width="3.4"/>
     </symbol>
+    <symbol id="icon-evolution" viewBox="0 0 340 100">
+      <!-- shared ground line -->
+      <line x1="2" y1="90" x2="338" y2="90" stroke="currentColor" stroke-width="1.4"/>
+      <!-- growth trajectory -->
+      <path d="M42 82 L152 56 L255 14" fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="2 5" stroke-linecap="round"/>
+
+      <!-- 01 land / plot -->
+      <path d="M15 90 L65 90 L60 78 L20 78 Z" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linejoin="round"/>
+
+      <!-- 02 home -->
+      <path d="M120 90 L120 64 L150 46 L180 64 L180 90" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linejoin="round" stroke-linecap="round"/>
+      <rect x="142" y="70" width="16" height="20" fill="none" stroke="currentColor" stroke-width="2.8"/>
+
+      <!-- 03 skyscraper -->
+      <rect x="230" y="18" width="50" height="72" fill="none" stroke="currentColor" stroke-width="3.6"/>
+      <line x1="255" y1="18" x2="255" y2="6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+      <g stroke="currentColor" stroke-width="1.6">
+        <rect x="238" y="27" width="6" height="6" fill="none"/><rect x="252" y="27" width="6" height="6" fill="none"/><rect x="266" y="27" width="6" height="6" fill="none"/>
+        <rect x="238" y="40" width="6" height="6" fill="none"/><rect x="252" y="40" width="6" height="6" fill="none"/><rect x="266" y="40" width="6" height="6" fill="none"/>
+        <rect x="238" y="53" width="6" height="6" fill="none"/><rect x="252" y="53" width="6" height="6" fill="none"/><rect x="266" y="53" width="6" height="6" fill="none"/>
+        <rect x="238" y="66" width="6" height="6" fill="none"/><rect x="252" y="66" width="6" height="6" fill="none"/><rect x="266" y="66" width="6" height="6" fill="none"/>
+        <rect x="238" y="79" width="6" height="6" fill="none"/><rect x="252" y="79" width="6" height="6" fill="none"/><rect x="266" y="79" width="6" height="6" fill="none"/>
+      </g>
+    </symbol>
   </defs>
 </svg>
 
@@ -450,7 +474,7 @@
 
 <section class="hero" id="top">
   <div class="hero-grain"></div>
-  <svg class="hero-home-mark" viewBox="0 0 100 100" aria-hidden="true"><use href="#icon-home"/></svg>
+  <svg class="hero-home-mark" viewBox="0 0 340 100" preserveAspectRatio="xMidYMax meet" aria-hidden="true"><use href="#icon-evolution"/></svg>
   <div class="hero-top wrap">
     <div class="hero-eyebrow mono">Kolhapur, Maharashtra — Property Marketing &amp; Sales</div>
     <div class="hero-headline">
