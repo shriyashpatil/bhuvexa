@@ -110,8 +110,10 @@
     padding:16px 0; border-bottom-color:var(--line);
   }
   .nav{ display:flex; align-items:center; justify-content:space-between; }
-  .brand{ display:flex; flex-direction:column; line-height:1; color:var(--paper); transition:color .4s ease; }
+  .brand{ display:flex; align-items:center; gap:12px; line-height:1; color:var(--paper); transition:color .4s ease; }
   header.site.solid .brand{ color:var(--ink); }
+  .brand-icon{ width:32px; height:32px; flex-shrink:0; color:inherit; }
+  .brand-text{ display:flex; flex-direction:column; }
   .brand .word{ font-family:'Bodoni Moda', serif; font-weight:500; font-size:23px; font-style:italic; }
   .brand .tag{ font-family:'Manrope',sans-serif; font-size:9px; font-weight:700; letter-spacing:0.18em; opacity:0.6; margin-top:5px; text-transform:uppercase; }
   nav.links{ display:flex; gap:38px; font-size:13px; }
@@ -384,8 +386,15 @@
 <header class="site" id="siteHeader">
   <div class="wrap nav">
     <div class="brand">
-      <span class="word">Bhuvexa</span>
-      <span class="tag">Advise · Market · Sell</span>
+      <svg class="brand-icon" viewBox="0 0 200 200" aria-hidden="true">
+        <circle cx="100" cy="100" r="76" fill="none" stroke="currentColor" stroke-width="6"/>
+        <text x="100" y="132" font-family="'Bodoni Moda',serif" font-style="italic" font-size="92" fill="currentColor" text-anchor="middle">B</text>
+        <rect x="70" y="144" width="60" height="5" fill="currentColor"/>
+      </svg>
+      <div class="brand-text">
+        <span class="word">Bhuvexa</span>
+        <span class="tag">Advise · Market · Sell</span>
+      </div>
     </div>
     <nav class="links">
       <a href="#services">Services</a>
@@ -403,6 +412,14 @@
 </header>
 
 <div class="mobile-menu" id="mobileMenu">
+  <div class="brand" style="color:var(--paper); margin-bottom:24px;">
+    <svg class="brand-icon" viewBox="0 0 200 200" aria-hidden="true">
+      <circle cx="100" cy="100" r="76" fill="none" stroke="currentColor" stroke-width="6"/>
+      <text x="100" y="132" font-family="'Bodoni Moda',serif" font-style="italic" font-size="92" fill="currentColor" text-anchor="middle">B</text>
+      <rect x="70" y="144" width="60" height="5" fill="currentColor"/>
+    </svg>
+    <span class="word" style="font-size:20px;">Bhuvexa</span>
+  </div>
   <a href="#services">Services</a>
   <a href="#properties">Properties</a>
   <a href="#process">Process</a>
@@ -705,7 +722,14 @@
   <div class="wrap">
     <div class="footer-grid">
       <div>
-        <span class="word">Bhuvexa</span>
+        <div class="brand" style="color:var(--ink);">
+          <svg class="brand-icon" viewBox="0 0 200 200" aria-hidden="true">
+            <circle cx="100" cy="100" r="76" fill="none" stroke="currentColor" stroke-width="6"/>
+            <text x="100" y="132" font-family="'Bodoni Moda',serif" font-style="italic" font-size="92" fill="currentColor" text-anchor="middle">B</text>
+            <rect x="70" y="144" width="60" height="5" fill="currentColor"/>
+          </svg>
+          <span class="word">Bhuvexa</span>
+        </div>
         <p class="fine">Property marketing, development coordination and real estate sales in Kolhapur — we sell the advice and the property, from first assessment through to sold.</p>
       </div>
       <div class="footer-col">
