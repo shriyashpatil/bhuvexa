@@ -180,6 +180,11 @@
   .hero-grain{ position:absolute; inset:0; opacity:0.5; mix-blend-mode:overlay; pointer-events:none;
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
   }
+  .hero-home-mark{
+    position:absolute; right:-60px; bottom:-40px; width:560px; height:560px;
+    color:var(--paper); opacity:0.05; pointer-events:none; z-index:1;
+  }
+  @media (max-width:760px){ .hero-home-mark{ width:340px; height:340px; right:-80px; bottom:-30px; } }
   .hero-top{ padding:150px 0 0; position:relative; z-index:2; }
   .hero-eyebrow{ display:flex; align-items:center; gap:14px; color:var(--paper-soft); }
   .hero-eyebrow::before{ content:""; width:34px; height:1px; background:var(--paper-soft); }
@@ -247,6 +252,8 @@
     letter-spacing:0.16em; text-transform:uppercase; color:var(--paper-faint);
     border:1px solid var(--line-dark); padding:9px 16px; border-radius:100px;
   }
+  .dummy-media-inner{ position:relative; z-index:1; display:flex; flex-direction:column; align-items:center; gap:14px; }
+  .dummy-media .home-icon{ width:40px; height:40px; color:var(--paper-faint); }
   .dummy-media.tone-light{ background:linear-gradient(135deg, var(--cream-3), var(--cream-2)); }
   .dummy-media.tone-light .label{ color:var(--ink-faint); border-color:var(--line); }
 
@@ -371,6 +378,16 @@
 </head>
 <body>
 
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="icon-home" viewBox="0 0 100 100">
+      <path d="M10 54 L10 30 L50 8 L90 30 L90 54" fill="none" stroke="currentColor" stroke-width="4.2" stroke-linejoin="round" stroke-linecap="round"/>
+      <line x1="10" y1="54" x2="90" y2="54" stroke="currentColor" stroke-width="4.2" stroke-linecap="round"/>
+      <rect x="41" y="34" width="18" height="20" fill="none" stroke="currentColor" stroke-width="3.4"/>
+    </symbol>
+  </defs>
+</svg>
+
 <div class="cursor-dot" id="cursorDot"></div>
 <div class="cursor-ring" id="cursorRing"></div>
 
@@ -433,6 +450,7 @@
 
 <section class="hero" id="top">
   <div class="hero-grain"></div>
+  <svg class="hero-home-mark" viewBox="0 0 100 100" aria-hidden="true"><use href="#icon-home"/></svg>
   <div class="hero-top wrap">
     <div class="hero-eyebrow mono">Kolhapur, Maharashtra — Property Marketing &amp; Sales</div>
     <div class="hero-headline">
@@ -529,7 +547,7 @@
 
     <div class="listing-grid">
       <div class="listing-card reveal">
-        <div class="listing-media dummy-media"><span class="label">Image placeholder</span><span class="listing-badge">For Sale</span></div>
+        <div class="listing-media dummy-media"><div class="dummy-media-inner"><svg class="home-icon" viewBox="0 0 100 100"><use href="#icon-home"/></svg><span class="label">Image placeholder</span></div><span class="listing-badge">For Sale</span></div>
         <div class="listing-body">
           <span class="listing-type mono">Residential Plot</span>
           <h3>Sample Plot, Kolhapur Outskirts</h3>
@@ -538,7 +556,7 @@
         </div>
       </div>
       <div class="listing-card reveal">
-        <div class="listing-media dummy-media"><span class="label">Image placeholder</span><span class="listing-badge">For Sale</span></div>
+        <div class="listing-media dummy-media"><div class="dummy-media-inner"><svg class="home-icon" viewBox="0 0 100 100"><use href="#icon-home"/></svg><span class="label">Image placeholder</span></div><span class="listing-badge">For Sale</span></div>
         <div class="listing-body">
           <span class="listing-type mono">2 BHK Flat</span>
           <h3>Sample Residency, Rajarampuri Road</h3>
@@ -547,7 +565,7 @@
         </div>
       </div>
       <div class="listing-card reveal">
-        <div class="listing-media dummy-media"><span class="label">Image placeholder</span><span class="listing-badge">For Sale</span></div>
+        <div class="listing-media dummy-media"><div class="dummy-media-inner"><svg class="home-icon" viewBox="0 0 100 100"><use href="#icon-home"/></svg><span class="label">Image placeholder</span></div><span class="listing-badge">For Sale</span></div>
         <div class="listing-body">
           <span class="listing-type mono">Commercial Plot</span>
           <h3>Sample Site, Highway Frontage</h3>
@@ -556,7 +574,7 @@
         </div>
       </div>
       <div class="listing-card reveal">
-        <div class="listing-media dummy-media"><span class="label">Image placeholder</span><span class="listing-badge">For Sale</span></div>
+        <div class="listing-media dummy-media"><div class="dummy-media-inner"><svg class="home-icon" viewBox="0 0 100 100"><use href="#icon-home"/></svg><span class="label">Image placeholder</span></div><span class="listing-badge">For Sale</span></div>
         <div class="listing-body">
           <span class="listing-type mono">Farmhouse Land</span>
           <h3>Sample Parcel, Panhala Road</h3>
