@@ -271,8 +271,11 @@
   /* ---------- properties ---------- */
   .listing-note{ font-size:12.5px; color:var(--ink-faint); margin-top:-40px; margin-bottom:44px; font-style:italic; font-family:'Bodoni Moda',serif; }
   .listing-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line); border:1px solid var(--line); }
-  .listing-card{ background:var(--cream); }
+  .listing-card{ background:var(--cream); display:block; transition:box-shadow .25s ease; }
+  .listing-card--live{ box-shadow:inset 0 0 0 1px var(--navy); }
+  .listing-card--live:hover{ box-shadow:inset 0 0 0 1px var(--navy), 0 18px 34px rgba(5,25,54,0.14); }
   .listing-media{ position:relative; aspect-ratio:300/220; }
+  .listing-media img{ width:100%; height:100%; object-fit:cover; display:block; }
   .listing-badge{ position:absolute; top:14px; left:14px; z-index:2; font-size:9px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; background:var(--navy); color:var(--cream); padding:6px 12px; border-radius:100px; }
   .listing-body{ padding:22px 22px 26px; }
   .listing-type{ font-size:9.5px; color:var(--ink-faint); }
@@ -567,7 +570,7 @@
       <p>A sample of the kind of inventory we handle — plots, residential units and commercial land across the Kolhapur region.</p>
     </div>
 
-    <div class="listing-note reveal">Photography to follow — sample listings shown for illustration.</div>
+    <div class="listing-note reveal">Injole Panhala is a live, currently-marketed listing — the rest are shown for illustration while more inventory is added.</div>
 
     <div class="listing-grid">
       <div class="listing-card reveal">
@@ -597,15 +600,18 @@
           <div class="listing-foot"><span class="listing-price">Price on request</span><a class="btn ghost-light btn-sm magnetic" href="#contact">Enquire</a></div>
         </div>
       </div>
-      <div class="listing-card reveal">
-        <div class="listing-media dummy-media"><div class="dummy-media-inner"><svg class="home-icon" viewBox="0 0 100 100"><use href="#icon-home"/></svg><span class="label">Image placeholder</span></div><span class="listing-badge">For Sale</span></div>
-        <div class="listing-body">
-          <span class="listing-type mono">Farmhouse Land</span>
-          <h3>Sample Parcel, Panhala Road</h3>
-          <div class="listing-specs"><span>1.2 acres</span><span>·</span><span>Water access · Approach road</span></div>
-          <div class="listing-foot"><span class="listing-price">Price on request</span><a class="btn ghost-light btn-sm magnetic" href="#contact">Enquire</a></div>
+      <a class="listing-card listing-card--live reveal" href="properties/injole-panhala.html">
+        <div class="listing-media">
+          <img src="assets/injole-panhala/render-villa.jpg" alt="Sample bungalow design, Injole Panhala" loading="lazy">
+          <span class="listing-badge">50% Sold</span>
         </div>
-      </div>
+        <div class="listing-body">
+          <span class="listing-type mono">Weekend Plot &amp; Bungalow</span>
+          <h3>Injole Panhala — Relaxx Inn</h3>
+          <div class="listing-specs"><span>5,000 sq.ft plots</span><span>·</span><span>6-acre project · Valley view</span></div>
+          <div class="listing-foot"><span class="listing-price">Contact for price</span><span class="btn ghost-light btn-sm magnetic">View Property →</span></div>
+        </div>
+      </a>
     </div>
   </div>
 </section>
@@ -728,6 +734,14 @@
         <div class="faq-q"><span>Is RERA guidance part of your services?</span><span class="plus">+</span></div>
         <div class="faq-a"><p>Yes — we offer guidance and assistance relating to RERA registration, documentation and compliance requirements as part of our planning and approvals support.</p></div>
       </div>
+      <div class="faq-item">
+        <div class="faq-q"><span>Is Bhuvexa itself RERA registered?</span><span class="plus">+</span></div>
+        <div class="faq-a"><p>Bhuvexa's own RERA compliance is currently in progress. We'll update this page as soon as registration is complete — feel free to ask us directly about the current status.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q"><span>Do you work with agents or brokers?</span><span class="plus">+</span></div>
+        <div class="faq-a"><p>No — we deal directly with property owners and buyers. Agent and broker enquiries are not entertained or connected on any of our listings.</p></div>
+      </div>
     </div>
   </div>
 </section>
@@ -773,6 +787,7 @@
           <span class="word">Bhuvexa</span>
         </div>
         <p class="fine">Property marketing, development coordination and real estate sales in Kolhapur — we sell the advice and the property, from first assessment through to sold.</p>
+        <p class="fine" style="margin-top:12px; opacity:0.75;">Direct from owner — agent &amp; broker enquiries are not entertained. RERA compliance for Bhuvexa is in progress.</p>
       </div>
       <div class="footer-col">
         <h4>Services</h4>

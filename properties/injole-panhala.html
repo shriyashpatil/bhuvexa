@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Injole Panhala — Relaxx Inn | Weekend Plots &amp; Bungalows, Panhala | Bhuvexa</title>
+<meta name="description" content="5,000 sq.ft weekend plots on a 6-acre valley-view site at Injole, Panhala — 20km from Kolhapur, 2km from Panhala Fort. All facilities included. 50% already sold.">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;1,6..96,400;1,6..96,500&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<style>
+  :root{
+    --navy:#051936; --navy-2:#0B2547; --navy-3:#132E5C;
+    --cream:#F8F0E8; --cream-2:#F1E6D8; --cream-3:#EADCC8;
+    --ink:#051936; --ink-soft:rgba(5,25,54,0.62); --ink-faint:rgba(5,25,54,0.38);
+    --paper:#F8F0E8; --paper-soft:rgba(248,240,232,0.66); --paper-faint:rgba(248,240,232,0.38);
+    --line:rgba(5,25,54,0.14); --line-dark:rgba(248,240,232,0.16);
+    --max:1240px; --ease:cubic-bezier(.16,1,.3,1);
+  }
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{ margin:0; background:var(--cream); color:var(--ink); font-family:'Manrope',sans-serif; -webkit-font-smoothing:antialiased; overflow-x:hidden; }
+  h1,h2,h3{ font-family:'Bodoni Moda',serif; font-weight:500; letter-spacing:-0.01em; margin:0; }
+  h1 em, h2 em{ font-style:italic; }
+  a{ color:inherit; text-decoration:none; }
+  img{ display:block; max-width:100%; }
+  .wrap{ max-width:var(--max); margin:0 auto; padding:0 40px; }
+  @media (max-width:700px){ .wrap{ padding:0 22px; } }
+  .mono{ font-family:'Manrope',sans-serif; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; font-size:11px; }
+
+  header.site{ padding:20px 0; border-bottom:1px solid var(--line); background:var(--cream); position:sticky; top:0; z-index:50; }
+  .nav{ display:flex; align-items:center; justify-content:space-between; }
+  .brand{ display:flex; align-items:center; gap:11px; color:var(--ink); }
+  .brand-icon{ width:36px; height:36px; flex-shrink:0; }
+  .brand .word{ font-family:'Bodoni Moda',serif; font-weight:500; font-size:20px; font-style:italic; }
+  .back-link{ font-size:13px; font-weight:600; color:var(--ink-soft); display:flex; align-items:center; gap:8px; }
+  .back-link:hover{ color:var(--ink); }
+  .back-link span{ transition:transform .3s var(--ease); }
+  .back-link:hover span{ transform:translateX(-4px); }
+
+  .hero{ position:relative; height:62vh; min-height:420px; overflow:hidden; }
+  .hero img{ width:100%; height:100%; object-fit:cover; }
+  .hero::after{ content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(5,25,54,0.15) 0%, rgba(5,25,54,0.75) 100%); }
+  .hero-copy{ position:absolute; left:0; right:0; bottom:0; padding:48px 0; color:var(--paper); z-index:2; }
+  .hero-badge{ display:inline-flex; align-items:center; gap:8px; background:var(--navy); color:var(--cream); font-size:10px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; padding:7px 14px; border-radius:100px; margin-bottom:18px; }
+  .hero-copy h1{ font-size:clamp(32px,5vw,56px); line-height:1.05; }
+  .hero-copy p.loc{ margin-top:14px; font-size:15px; color:var(--paper-soft); }
+
+  section{ padding:72px 0; }
+  .facts-strip{ background:var(--navy); color:var(--paper); padding:0; }
+  .facts-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line-dark); }
+  .fact{ background:var(--navy); padding:28px 30px; }
+  .fact .mono{ color:var(--paper-faint); display:block; margin-bottom:10px; }
+  .fact .val{ font-family:'Bodoni Moda',serif; font-style:italic; font-size:22px; }
+  @media (max-width:760px){ .facts-grid{ grid-template-columns:1fr 1fr; } }
+
+  .section-head{ margin-bottom:40px; max-width:64ch; }
+  .section-head .kicker{ display:flex; align-items:center; gap:14px; color:var(--ink-faint); margin-bottom:16px; }
+  .section-head .kicker::before{ content:""; width:34px; height:1px; background:var(--ink-faint); }
+  .section-head h2{ font-size:clamp(26px,3vw,36px); }
+  .lede p{ font-size:15.5px; line-height:1.75; color:var(--ink-soft); margin:0 0 18px; }
+  .lede p:last-child{ margin-bottom:0; }
+
+  .facility-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); margin-top:8px; }
+  .facility{ background:var(--cream); padding:24px 22px; display:flex; align-items:center; gap:14px; }
+  .facility .dot{ width:8px; height:8px; border-radius:50%; background:var(--navy); flex-shrink:0; }
+  .facility span{ font-size:14px; font-weight:600; }
+  @media (max-width:760px){ .facility-grid{ grid-template-columns:1fr 1fr; } }
+  @media (max-width:480px){ .facility-grid{ grid-template-columns:1fr; } }
+
+  .gallery-section{ background:var(--cream-2); }
+  .gallery-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:8px; }
+  .gallery-item{ background:var(--cream); border:1px solid var(--line); overflow:hidden; }
+  .gallery-item img{ width:100%; aspect-ratio:4/3; object-fit:cover; }
+  .gallery-item .cap{ padding:14px 16px; font-size:12px; color:var(--ink-soft); font-weight:600; }
+  @media (max-width:860px){ .gallery-grid{ grid-template-columns:1fr 1fr; } }
+  @media (max-width:560px){ .gallery-grid{ grid-template-columns:1fr; } }
+
+  .plans-grid{ display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:8px; }
+  .plan-card{ background:var(--cream); border:1px solid var(--line); }
+  .plan-card img{ width:100%; }
+  .plan-card .cap{ padding:16px 18px; border-top:1px solid var(--line); font-family:'Bodoni Moda',serif; font-style:italic; font-size:16px; }
+  @media (max-width:760px){ .plans-grid{ grid-template-columns:1fr; } }
+
+  .notice{ background:var(--cream-3); border:1px solid var(--line); padding:22px 26px; margin-top:8px; display:flex; flex-direction:column; gap:10px; }
+  .notice .line{ display:flex; gap:12px; align-items:flex-start; font-size:13.5px; color:var(--ink-soft); line-height:1.6; }
+  .notice .line b{ color:var(--ink); font-weight:700; }
+  .notice .mk{ font-family:'Bodoni Moda',serif; font-style:italic; color:var(--navy); flex-shrink:0; }
+
+  .contact-cta{ background:var(--navy); color:var(--paper); text-align:center; }
+  .contact-cta h2{ color:var(--paper); font-size:clamp(26px,3.4vw,40px); max-width:20ch; margin:0 auto; }
+  .contact-cta p{ margin-top:16px; color:var(--paper-soft); font-size:15px; }
+  .contact-actions{ display:flex; gap:16px; justify-content:center; margin-top:30px; flex-wrap:wrap; }
+  .btn{ display:inline-flex; align-items:center; gap:9px; padding:13px 26px; font-size:13px; font-weight:700; border-radius:100px; border:1px solid transparent; transition:background .2s ease, transform .2s ease; }
+  .btn.primary{ background:var(--paper); color:var(--navy); }
+  .btn.primary:hover{ transform:translateY(-1px); }
+  .btn.ghost{ border-color:rgba(248,240,232,0.4); color:var(--paper); }
+  .btn.ghost:hover{ background:rgba(248,240,232,0.1); }
+  .contact-line{ margin-top:26px; font-size:13px; color:var(--paper-faint); }
+  .contact-line a{ color:var(--paper); font-weight:600; }
+
+  footer{ background:var(--cream); padding:36px 0; border-top:1px solid var(--line); }
+  .footer-row{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px; font-size:12px; color:var(--ink-faint); }
+  .footer-row a{ color:var(--ink-soft); font-weight:600; }
+  .footer-row a:hover{ color:var(--ink); }
+
+  .reveal{ opacity:0; transform:translateY(24px); }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap nav">
+    <a class="brand" href="../index.html">
+      <svg class="brand-icon" viewBox="0 0 200 200" aria-hidden="true">
+        <circle cx="100" cy="100" r="76" fill="none" stroke="currentColor" stroke-width="6"/>
+        <text x="100" y="132" font-family="'Bodoni Moda',serif" font-style="italic" font-size="92" fill="currentColor" text-anchor="middle">B</text>
+        <rect x="70" y="144" width="60" height="5" fill="currentColor"/>
+      </svg>
+      <span class="word">Bhuvexa</span>
+    </a>
+    <a class="back-link" href="../index.html#properties"><span>←</span> Back to all properties</a>
+  </div>
+</header>
+
+<section class="hero">
+  <img src="../assets/injole-panhala/render-villa.jpg" alt="Sample bungalow design at Injole Panhala">
+  <div class="hero-copy wrap">
+    <span class="hero-badge">50% Already Sold</span>
+    <h1>Injole Panhala — <em>Relaxx Inn</em></h1>
+    <p class="loc">Weekend Plots &amp; Bungalow Scheme · Injole, Panhala, Kolhapur District</p>
+  </div>
+</section>
+
+<section class="facts-strip">
+  <div class="facts-grid">
+    <div class="fact"><span class="mono">Total Project</span><div class="val">6 Acres</div></div>
+    <div class="fact"><span class="mono">Plot Size</span><div class="val">5,000 sq.ft</div></div>
+    <div class="fact"><span class="mono">From Kolhapur</span><div class="val">~20 km</div></div>
+    <div class="fact"><span class="mono">From Panhala Fort</span><div class="val">~2 km</div></div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="kicker mono">About the site</div>
+      <h2>A weekend retreat with a <em>valley view</em></h2>
+    </div>
+    <div class="lede reveal">
+      <p>Injole Panhala sits beside Masai Pathar, giving the site an open, elevated valley view that's hard to find this close to Kolhapur. It's built as a weekend plot and bungalow scheme — a place to slow down, not just a plot of land.</p>
+      <p>The project spans 6 acres with individual plots of 5,000 sq.ft, sized for a proper weekend bungalow with room to breathe — garden, parking, a place to sit outside. That plot size, this close to Panhala, is what puts it at the more spacious, luxurious end of what's available in the region.</p>
+      <p>Pleasant climate through all seasons, Panhala Fort and the surrounding scenic spots within a 2km periphery, and Kolhapur itself only around 20km away — close enough for a weekend, far enough to actually feel like one.</p>
+      <p>Half the project is already sold. If a plot here is something you're weighing, it's worth moving on sooner rather than later.</p>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0;">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="kicker mono">On site</div>
+      <h2>Facilities included</h2>
+    </div>
+    <div class="facility-grid reveal">
+      <div class="facility"><span class="dot"></span><span>Electricity / Light</span></div>
+      <div class="facility"><span class="dot"></span><span>Water Supply</span></div>
+      <div class="facility"><span class="dot"></span><span>Children's Play Area</span></div>
+      <div class="facility"><span class="dot"></span><span>Security Watchman</span></div>
+      <div class="facility"><span class="dot"></span><span>Landscaped Garden</span></div>
+      <div class="facility"><span class="dot"></span><span>Approved Layout</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="gallery-section">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="kicker mono">Sample bungalow design</div>
+      <h2>What you could build here</h2>
+      <p style="margin-top:14px; font-size:14px; color:var(--ink-soft); line-height:1.6;">Illustrative design concept for a weekend bungalow on a 5,000 sq.ft plot — brick-and-tile elevation with a garden, gazebo and plunge pool. Not a fixed structure — your plot, your design.</p>
+    </div>
+    <div class="gallery-grid reveal">
+      <div class="gallery-item">
+        <img src="../assets/injole-panhala/render-cottage.jpg" alt="Sample bungalow elevation, front view">
+        <div class="cap">Elevation — front view</div>
+      </div>
+      <div class="gallery-item">
+        <img src="../assets/injole-panhala/render-villa.jpg" alt="Sample bungalow elevation, garden view">
+        <div class="cap">Elevation — garden view</div>
+      </div>
+      <div class="gallery-item">
+        <img src="../assets/injole-panhala/landscape-top.jpg" alt="Landscape plan, top view">
+        <div class="cap">Landscape layout — top view</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="kicker mono">Floor plans</div>
+      <h2>Sample layout — ground &amp; first floor</h2>
+    </div>
+    <div class="plans-grid reveal">
+      <div class="plan-card">
+        <img src="../assets/injole-panhala/ground-floor-plan.jpg" alt="Ground floor plan">
+        <div class="cap">Ground Floor Plan</div>
+      </div>
+      <div class="plan-card">
+        <img src="../assets/injole-panhala/first-floor-plan.jpg" alt="First floor plan">
+        <div class="cap">First Floor Plan</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0;">
+  <div class="wrap">
+    <div class="notice reveal">
+      <div class="line"><span class="mk">—</span><span><b>Direct from owner.</b> Agent and broker enquiries are not entertained or connected on this listing — please contact us directly.</span></div>
+      <div class="line"><span class="mk">—</span><span><b>RERA compliance for Bhuvexa is in progress.</b> We'll update this listing as soon as registration is complete.</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="contact-cta">
+  <div class="wrap">
+    <h2 class="reveal">Half the plots are gone. See the rest before they are too.</h2>
+    <p class="reveal">Speak with Bhuvexa directly about availability, pricing and booking a site visit.</p>
+    <div class="contact-actions reveal">
+      <a class="btn primary" href="tel:+919595371199">Call 95953 71199</a>
+      <a class="btn ghost" href="mailto:bhuvexaconsultancy@gmail.com?subject=Injole%20Panhala%20-%20Relaxx%20Inn">Email us</a>
+    </div>
+    <div class="contact-line reveal">Mr. Subhash D. Patil · <a href="tel:+919595371199">+91 95953 71199</a></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-row">
+    <span>© 2026 Bhuvexa. Direct from owner — no brokers.</span>
+    <a href="../index.html#properties">All properties</a>
+    <a href="../index.html#contact">Contact Bhuvexa</a>
+  </div>
+</footer>
+
+<script>
+  gsap.registerPlugin(ScrollTrigger);
+  gsap.utils.toArray('.reveal').forEach(el=>{
+    gsap.fromTo(el, {opacity:0, y:24}, {
+      opacity:1, y:0, duration:0.8, ease:'power3.out',
+      scrollTrigger:{ trigger:el, start:'top 88%' }
+    });
+  });
+</script>
+
+</body>
+</html>
