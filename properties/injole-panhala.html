@@ -11,6 +11,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;1,6..96,400;1,6..96,500&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 <style>
   :root{
     --navy:#051936; --navy-2:#0B2547; --navy-3:#132E5C;
@@ -108,6 +110,20 @@
   .footer-row a:hover{ color:var(--ink); }
 
   .reveal{ opacity:0; transform:translateY(24px); }
+
+  /* ---------- 3D conceptual model ---------- */
+  .model-card{ background:var(--navy); border:1px solid var(--line-dark); position:relative; overflow:hidden; }
+  .model-canvas-wrap{ position:relative; width:100%; height:520px; cursor:grab; }
+  .model-canvas-wrap:active{ cursor:grabbing; }
+  .model-canvas-wrap canvas{ display:block; width:100%; height:100%; }
+  .model-hint{ position:absolute; left:20px; bottom:18px; z-index:3; font-size:10px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--paper-faint); display:flex; align-items:center; gap:8px; pointer-events:none; }
+  .model-hint svg{ width:14px; height:14px; }
+  .model-badge{ position:absolute; right:20px; top:18px; z-index:3; font-size:9px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--paper-faint); border:1px solid var(--line-dark); padding:7px 13px; border-radius:100px; }
+  .model-legend{ display:flex; gap:22px; flex-wrap:wrap; padding:18px 24px; border-top:1px solid var(--line-dark); }
+  .model-legend .li{ display:flex; align-items:center; gap:8px; font-size:12px; color:var(--paper-soft); }
+  .model-legend .sw{ width:9px; height:9px; border-radius:2px; flex-shrink:0; }
+  .model-loading{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:var(--paper-faint); font-size:11px; letter-spacing:0.1em; text-transform:uppercase; z-index:2; transition:opacity .4s ease; }
+  .model-caption{ font-size:13px; color:var(--ink-soft); line-height:1.6; margin-top:16px; max-width:60ch; }
 </style>
 </head>
 <body>
@@ -221,6 +237,32 @@
 
 <section style="padding-top:0;">
   <div class="wrap">
+    <div class="section-head reveal">
+      <div class="kicker mono">Conceptual model</div>
+      <h2>Explore the massing in <em>3D</em></h2>
+    </div>
+    <div class="model-card reveal">
+      <div class="model-canvas-wrap" id="modelCanvasWrap">
+        <div class="model-loading" id="modelLoading">Loading model…</div>
+        <div class="model-badge">Drag to orbit · Scroll to zoom</div>
+        <div class="model-hint">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3v4M12 17v4M3 12h4M17 12h4"/><circle cx="12" cy="12" r="3"/></svg>
+          Auto-rotating concept
+        </div>
+      </div>
+      <div class="model-legend">
+        <div class="li"><span class="sw" style="background:#C1683F;"></span>Bungalow (5,000 sq.ft plot)</div>
+        <div class="li"><span class="sw" style="background:#D9CBA8;"></span>Gazebo &amp; verandah</div>
+        <div class="li"><span class="sw" style="background:#3C6E8F;"></span>Plunge pool</div>
+        <div class="li"><span class="sw" style="background:#7C8C67;"></span>Garden &amp; plot boundary</div>
+      </div>
+    </div>
+    <p class="model-caption reveal">A simplified, to-scale massing study of the sample bungalow on its 5,000 sq.ft plot — built from the floor plans above, not a photorealistic render. Useful for a sense of scale and layout before you visit the site in person.</p>
+  </div>
+</section>
+
+<section style="padding-top:0;">
+  <div class="wrap">
     <div class="notice reveal">
       <div class="line"><span class="mk">—</span><span><b>Direct from owner.</b> Agent and broker enquiries are not entertained or connected on this listing — please contact us directly.</span></div>
       <div class="line"><span class="mk">—</span><span><b>RERA compliance for Bhuvexa is in progress.</b> We'll update this listing as soon as registration is complete.</span></div>
@@ -256,6 +298,258 @@
       scrollTrigger:{ trigger:el, start:'top 88%' }
     });
   });
+</script>
+
+<script>
+(function(){
+  if (typeof THREE === 'undefined') return;
+  var wrap = document.getElementById('modelCanvasWrap');
+  var loading = document.getElementById('modelLoading');
+  if (!wrap) return;
+
+  var COLORS = {
+    bg: 0x051936, ground: 0x7C8C67, hedge: 0x5C6E4C,
+    wall: 0xD9CBA8, wallDark: 0xC9B994, roof: 0xC1683F, roofDark: 0xA6532F,
+    pool: 0x3C6E8F, poolDeck: 0xCFC2A6, path: 0xBFAF8E,
+    trunk: 0x6B4A34, foliage: 0x4E6B3F, foliageLight: 0x5F7E4E,
+    car: 0x0B2547, carGlass: 0x9FB3C8
+  };
+
+  var scene = new THREE.Scene();
+  scene.background = new THREE.Color(COLORS.bg);
+  scene.fog = new THREE.Fog(COLORS.bg, 26, 58);
+
+  var camera = new THREE.PerspectiveCamera(38, 1, 0.1, 200);
+  camera.position.set(15, 12.5, 17);
+
+  var renderer = new THREE.WebGLRenderer({ antialias:true });
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  wrap.appendChild(renderer.domElement);
+
+  var controls = new THREE.OrbitControls(camera, renderer.domElement);
+  controls.target.set(0, 1.2, 0);
+  controls.enableDamping = true;
+  controls.dampingFactor = 0.08;
+  controls.minDistance = 10;
+  controls.maxDistance = 34;
+  controls.maxPolarAngle = Math.PI * 0.49;
+  controls.autoRotate = true;
+  controls.autoRotateSpeed = 0.7;
+  controls.enablePan = false;
+
+  var resumeTimer;
+  controls.addEventListener('start', function(){
+    controls.autoRotate = false;
+    clearTimeout(resumeTimer);
+  });
+  controls.addEventListener('end', function(){
+    resumeTimer = setTimeout(function(){ controls.autoRotate = true; }, 4500);
+  });
+
+  // ---------- lighting ----------
+  scene.add(new THREE.AmbientLight(0xF8F0E8, 0.55));
+  var sun = new THREE.DirectionalLight(0xFFEEDD, 1.05);
+  sun.position.set(12, 18, 8);
+  sun.castShadow = true;
+  sun.shadow.mapSize.set(1024, 1024);
+  sun.shadow.camera.left = -16; sun.shadow.camera.right = 16;
+  sun.shadow.camera.top = 16; sun.shadow.camera.bottom = -16;
+  scene.add(sun);
+  var fill = new THREE.DirectionalLight(0x9FC0E8, 0.25);
+  fill.position.set(-10, 8, -10);
+  scene.add(fill);
+
+  // ---------- ground ----------
+  var PLOT_W = 18, PLOT_D = 24;
+  var ground = new THREE.Mesh(
+    new THREE.PlaneGeometry(PLOT_W, PLOT_D),
+    new THREE.MeshStandardMaterial({ color: COLORS.ground, roughness:1 })
+  );
+  ground.rotation.x = -Math.PI/2;
+  ground.receiveShadow = true;
+  scene.add(ground);
+
+  // boundary hedge
+  var hedgeMat = new THREE.MeshStandardMaterial({ color: COLORS.hedge, roughness:1 });
+  function hedgeSegment(w,d,x,z){
+    var m = new THREE.Mesh(new THREE.BoxGeometry(w,0.7,d), hedgeMat);
+    m.position.set(x,0.35,z); m.castShadow = true; m.receiveShadow = true;
+    scene.add(m);
+  }
+  hedgeSegment(PLOT_W,0.5,0,-PLOT_D/2+0.25);
+  hedgeSegment(PLOT_W,0.5,0,PLOT_D/2-0.25-2); // gap kept near gate handled visually by driveway overlay
+  hedgeSegment(0.5,PLOT_D,-PLOT_W/2+0.25,0);
+  hedgeSegment(0.5,PLOT_D,PLOT_W/2-0.25,0);
+
+  // ---------- materials ----------
+  var wallMat = new THREE.MeshStandardMaterial({ color: COLORS.wall, roughness:0.9 });
+  var roofMat = new THREE.MeshStandardMaterial({ color: COLORS.roof, roughness:0.7 });
+  var pillarMat = new THREE.MeshStandardMaterial({ color: 0xF4EEE1, roughness:0.6 });
+
+  function hipRoof(spanX, spanZ, height){
+    var r = Math.max(spanX, spanZ) * 0.72;
+    var geo = new THREE.ConeGeometry(r, height, 4);
+    var mesh = new THREE.Mesh(geo, roofMat);
+    mesh.rotation.y = Math.PI/4;
+    mesh.scale.set(spanX/(r*1.41), 1, spanZ/(r*1.41));
+    mesh.castShadow = true;
+    return mesh;
+  }
+
+  // ---------- bungalow group ----------
+  var house = new THREE.Group();
+
+  // ground floor block (L-shaped feel via two boxes)
+  var gf = new THREE.Mesh(new THREE.BoxGeometry(6.6, 3.1, 6.2), wallMat);
+  gf.position.set(1.2, 1.55, -1.5);
+  gf.castShadow = true; gf.receiveShadow = true;
+  house.add(gf);
+
+  var gfRoof = hipRoof(7.4, 7.0, 2.2);
+  gfRoof.position.set(1.2, 3.1 + 1.1, -1.5);
+  house.add(gfRoof);
+
+  // first floor block (smaller, offset — matches asymmetric render massing)
+  var ff = new THREE.Mesh(new THREE.BoxGeometry(4.0, 2.7, 3.6), wallMat);
+  ff.position.set(-0.2, 4.65, -2.6);
+  ff.castShadow = true; ff.receiveShadow = true;
+  house.add(ff);
+
+  var ffRoof = hipRoof(4.8, 4.4, 2.0);
+  ffRoof.position.set(-0.2, 4.65 + 1.35 + 1.0, -2.6);
+  house.add(ffRoof);
+
+  // verandah slab + pillars (front porch, matches wrap-around porch in renders)
+  var verandahSlab = new THREE.Mesh(new THREE.BoxGeometry(7.6, 0.2, 3.0), pillarMat);
+  verandahSlab.position.set(1.0, 3.15, 2.0);
+  verandahSlab.castShadow = true;
+  house.add(verandahSlab);
+  var pillarGeo = new THREE.CylinderGeometry(0.09, 0.09, 3.05, 8);
+  [[-2.1,3.4],[0.0,3.4],[2.1,3.4],[4.0,3.4],[-2.1,0.7],[4.0,0.7]].forEach(function(p){
+    var pil = new THREE.Mesh(pillarGeo, pillarMat);
+    pil.position.set(1.0 + p[0]*0 + p[0], 1.6, p[1]);
+    pil.castShadow = true;
+    house.add(pil);
+  });
+
+  house.position.set(1.5, 0, -1.5);
+  scene.add(house);
+
+  // ---------- gazebo ----------
+  var gazebo = new THREE.Group();
+  var gPillarGeo = new THREE.CylinderGeometry(0.08,0.08,2.3,8);
+  var gPositions = [[-1,-1],[1,-1],[-1,1],[1,1]];
+  gPositions.forEach(function(p){
+    var pil = new THREE.Mesh(gPillarGeo, pillarMat);
+    pil.position.set(p[0], 1.15, p[1]);
+    pil.castShadow = true;
+    gazebo.add(pil);
+  });
+  var gRoof = hipRoof(2.8, 2.8, 1.3);
+  gRoof.position.set(0, 2.3 + 0.65, 0);
+  gazebo.add(gRoof);
+  var gFloor = new THREE.Mesh(new THREE.CylinderGeometry(1.35,1.35,0.12,8), pillarMat);
+  gFloor.position.set(0,0.06,0);
+  gFloor.receiveShadow = true;
+  gazebo.add(gFloor);
+  gazebo.position.set(-5.8, 0, -7.5);
+  scene.add(gazebo);
+
+  // ---------- pool ----------
+  var pool = new THREE.Group();
+  var deck = new THREE.Mesh(new THREE.CylinderGeometry(2.1,2.1,0.15,20), new THREE.MeshStandardMaterial({color:COLORS.poolDeck, roughness:0.9}));
+  deck.position.y = 0.075; deck.receiveShadow = true;
+  pool.add(deck);
+  var water = new THREE.Mesh(new THREE.CylinderGeometry(1.7,1.7,0.12,24), new THREE.MeshStandardMaterial({color:COLORS.pool, roughness:0.15, metalness:0.15}));
+  water.position.y = 0.1;
+  pool.add(water);
+  pool.position.set(-5.6, 0, -1.0);
+  scene.add(pool);
+
+  // ---------- driveway + car (scale reference) ----------
+  var drive = new THREE.Mesh(new THREE.PlaneGeometry(4.4, 6.5), new THREE.MeshStandardMaterial({color:0xBFB8AC, roughness:1}));
+  drive.rotation.x = -Math.PI/2;
+  drive.position.set(6.2, 0.01, 7.5);
+  drive.receiveShadow = true;
+  scene.add(drive);
+
+  var car = new THREE.Group();
+  var body = new THREE.Mesh(new THREE.BoxGeometry(1.7,0.55,3.4), new THREE.MeshStandardMaterial({color:COLORS.car, roughness:0.4, metalness:0.2}));
+  body.position.y = 0.45; body.castShadow = true;
+  car.add(body);
+  var cabin = new THREE.Mesh(new THREE.BoxGeometry(1.4,0.45,1.7), new THREE.MeshStandardMaterial({color:COLORS.carGlass, roughness:0.3}));
+  cabin.position.set(0,0.92,-0.2); cabin.castShadow = true;
+  car.add(cabin);
+  car.position.set(6.2, 0, 7.6);
+  car.rotation.y = 0.15;
+  scene.add(car);
+
+  // ---------- trees ----------
+  function tree(x,z,scale){
+    var g = new THREE.Group();
+    var trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.09,0.13,1.1,6), new THREE.MeshStandardMaterial({color:COLORS.trunk, roughness:1}));
+    trunk.position.y = 0.55; trunk.castShadow = true;
+    g.add(trunk);
+    var foliageColor = Math.random() > 0.5 ? COLORS.foliage : COLORS.foliageLight;
+    for (var i=0;i<3;i++){
+      var c = new THREE.Mesh(new THREE.ConeGeometry(0.75 - i*0.15, 1.0, 8), new THREE.MeshStandardMaterial({color:foliageColor, roughness:1}));
+      c.position.y = 1.1 + i*0.65;
+      c.castShadow = true;
+      g.add(c);
+    }
+    g.position.set(x,0,z);
+    g.scale.setScalar(scale || 1);
+    scene.add(g);
+  }
+  var treeSpots = [
+    [-8,-11,1.1],[-4,-11,0.9],[0,-11.2,1.0],[4,-11,1.1],[7.8,-10.5,0.9],
+    [-8,10.5,1.0],[8,10.2,1.0],[-8,3,0.8],[-8,-3,0.9],[8,-2,0.8],
+    [-7,-6,0.7],[7,6,0.8]
+  ];
+  treeSpots.forEach(function(t){ tree(t[0],t[1],t[2]); });
+
+  // simple palm near driveway
+  function palm(x,z){
+    var g = new THREE.Group();
+    var trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.1,0.16,2.2,6), new THREE.MeshStandardMaterial({color:0x8A7256, roughness:1}));
+    trunk.position.y = 1.1; trunk.rotation.z = 0.06; trunk.castShadow = true;
+    g.add(trunk);
+    for (var i=0;i<6;i++){
+      var frond = new THREE.Mesh(new THREE.ConeGeometry(0.16,1.3,4), new THREE.MeshStandardMaterial({color:0x5F7E4E, roughness:1}));
+      frond.position.y = 2.25;
+      frond.rotation.z = Math.PI/2.3;
+      frond.rotation.y = i * (Math.PI*2/6);
+      frond.position.x = Math.cos(i)*0.15; frond.position.z = Math.sin(i)*0.15;
+      frond.castShadow = true;
+      g.add(frond);
+    }
+    g.position.set(x,0,z);
+    scene.add(g);
+  }
+  palm(4.2, 9.5);
+
+  // ---------- resize + render loop ----------
+  function resize(){
+    var w = wrap.clientWidth, h = wrap.clientHeight;
+    if (!w || !h) return;
+    camera.aspect = w/h;
+    camera.updateProjectionMatrix();
+    renderer.setSize(w,h);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio||1, 2));
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  var started = false;
+  function animate(){
+    requestAnimationFrame(animate);
+    controls.update();
+    renderer.render(scene, camera);
+    if (!started){ started = true; if (loading) loading.style.opacity = '0'; setTimeout(function(){ if(loading) loading.style.display='none'; }, 400); }
+  }
+  animate();
+})();
 </script>
 
 </body>
