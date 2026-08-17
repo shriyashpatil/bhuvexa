@@ -12,7 +12,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 <style>
   :root{
     --navy:#051936; --navy-2:#0B2547; --navy-3:#132E5C;
@@ -123,6 +122,9 @@
   .model-legend .li{ display:flex; align-items:center; gap:8px; font-size:12px; color:var(--paper-soft); }
   .model-legend .sw{ width:9px; height:9px; border-radius:2px; flex-shrink:0; }
   .model-loading{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:var(--paper-faint); font-size:11px; letter-spacing:0.1em; text-transform:uppercase; z-index:2; transition:opacity .4s ease; }
+  .model-error{ position:absolute; inset:0; display:none; flex-direction:column; align-items:center; justify-content:center; gap:6px; text-align:center; padding:0 30px; color:var(--paper-faint); z-index:2; }
+  .model-error strong{ color:var(--paper-soft); font-family:'Bodoni Moda',serif; font-style:italic; font-size:18px; font-weight:500; }
+  .model-error span{ font-size:12.5px; line-height:1.6; max-width:42ch; }
   .model-caption{ font-size:13px; color:var(--ink-soft); line-height:1.6; margin-top:16px; max-width:60ch; }
 </style>
 </head>
@@ -244,6 +246,10 @@
     <div class="model-card reveal">
       <div class="model-canvas-wrap" id="modelCanvasWrap">
         <div class="model-loading" id="modelLoading">Loading model…</div>
+        <div class="model-error" id="modelError">
+          <strong>Model unavailable</strong>
+          <span>The 3D view couldn't load in this browser. Please try a recent version of Chrome, Safari or Edge, or contact us for a walkthrough.</span>
+        </div>
         <div class="model-badge">Drag to orbit · Scroll to zoom</div>
         <div class="model-hint">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3v4M12 17v4M3 12h4M17 12h4"/><circle cx="12" cy="12" r="3"/></svg>
@@ -265,7 +271,6 @@
   <div class="wrap">
     <div class="notice reveal">
       <div class="line"><span class="mk">—</span><span><b>Direct from owner.</b> Agent and broker enquiries are not entertained or connected on this listing — please contact us directly.</span></div>
-      <div class="line"><span class="mk">—</span><span><b>RERA compliance for Bhuvexa is in progress.</b> We'll update this listing as soon as registration is complete.</span></div>
     </div>
   </div>
 </section>
@@ -302,10 +307,19 @@
 
 <script>
 (function(){
-  if (typeof THREE === 'undefined') return;
   var wrap = document.getElementById('modelCanvasWrap');
   var loading = document.getElementById('modelLoading');
   if (!wrap) return;
+
+  if (typeof THREE === 'undefined') {
+    console.error('Bhuvexa 3D model: THREE.js failed to load from CDN.');
+    if (loading) loading.style.display = 'none';
+    var errEl = document.getElementById('modelError');
+    if (errEl) errEl.style.display = 'flex';
+    return;
+  }
+
+  try {
 
   var COLORS = {
     bg: 0x051936, ground: 0x7C8C67, hedge: 0x5C6E4C,
@@ -327,25 +341,52 @@
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   wrap.appendChild(renderer.domElement);
 
-  var controls = new THREE.OrbitControls(camera, renderer.domElement);
-  controls.target.set(0, 1.2, 0);
-  controls.enableDamping = true;
-  controls.dampingFactor = 0.08;
-  controls.minDistance = 10;
-  controls.maxDistance = 34;
-  controls.maxPolarAngle = Math.PI * 0.49;
-  controls.autoRotate = true;
-  controls.autoRotateSpeed = 0.7;
-  controls.enablePan = false;
+  // ---------- custom orbit controls (no external OrbitControls.js dependency) ----------
+  var target = new THREE.Vector3(0, 1.2, 0);
+  var spherical = new THREE.Spherical().setFromVector3(camera.position.clone().sub(target));
+  var targetTheta = spherical.theta, targetPhi = spherical.phi, targetRadius = spherical.radius;
+  var MIN_DIST = 10, MAX_DIST = 34, MIN_POLAR = 0.32, MAX_POLAR = Math.PI * 0.49;
+  var DAMPING = 0.08, AUTO_ROTATE_SPEED = 0.0045;
+  var autoRotate = true, dragging = false, lastX = 0, lastY = 0, resumeTimer;
+  var el = renderer.domElement;
+  el.style.touchAction = 'none';
 
-  var resumeTimer;
-  controls.addEventListener('start', function(){
-    controls.autoRotate = false;
-    clearTimeout(resumeTimer);
-  });
-  controls.addEventListener('end', function(){
-    resumeTimer = setTimeout(function(){ controls.autoRotate = true; }, 4500);
-  });
+  function pauseAuto(){ autoRotate = false; clearTimeout(resumeTimer); }
+  function resumeAutoLater(){ resumeTimer = setTimeout(function(){ autoRotate = true; }, 4500); }
+
+  function onDown(x, y){ dragging = true; lastX = x; lastY = y; pauseAuto(); el.style.cursor = 'grabbing'; }
+  function onMove(x, y){
+    if (!dragging) return;
+    var dx = x - lastX, dy = y - lastY;
+    lastX = x; lastY = y;
+    targetTheta -= dx * 0.006;
+    targetPhi = Math.max(MIN_POLAR, Math.min(MAX_POLAR, targetPhi - dy * 0.006));
+  }
+  function onUp(){ if (!dragging) return; dragging = false; el.style.cursor = 'grab'; resumeAutoLater(); }
+
+  el.style.cursor = 'grab';
+  el.addEventListener('pointerdown', function(e){ onDown(e.clientX, e.clientY); el.setPointerCapture && el.setPointerCapture(e.pointerId); });
+  el.addEventListener('pointermove', function(e){ onMove(e.clientX, e.clientY); });
+  window.addEventListener('pointerup', onUp);
+  el.addEventListener('touchstart', function(e){ var t = e.touches[0]; onDown(t.clientX, t.clientY); }, { passive:true });
+  el.addEventListener('touchmove', function(e){ var t = e.touches[0]; onMove(t.clientX, t.clientY); e.preventDefault(); }, { passive:false });
+  el.addEventListener('touchend', onUp, { passive:true });
+  el.addEventListener('wheel', function(e){
+    e.preventDefault();
+    pauseAuto();
+    targetRadius = Math.max(MIN_DIST, Math.min(MAX_DIST, targetRadius + e.deltaY * 0.02));
+    resumeAutoLater();
+  }, { passive:false });
+
+  function updateControls(){
+    if (autoRotate) targetTheta += AUTO_ROTATE_SPEED;
+    spherical.theta += (targetTheta - spherical.theta) * DAMPING;
+    spherical.phi += (targetPhi - spherical.phi) * DAMPING;
+    spherical.radius += (targetRadius - spherical.radius) * DAMPING;
+    spherical.makeSafe();
+    camera.position.setFromSpherical(spherical).add(target);
+    camera.lookAt(target);
+  }
 
   // ---------- lighting ----------
   scene.add(new THREE.AmbientLight(0xF8F0E8, 0.55));
@@ -544,11 +585,17 @@
   var started = false;
   function animate(){
     requestAnimationFrame(animate);
-    controls.update();
+    updateControls();
     renderer.render(scene, camera);
     if (!started){ started = true; if (loading) loading.style.opacity = '0'; setTimeout(function(){ if(loading) loading.style.display='none'; }, 400); }
   }
   animate();
+  } catch (err) {
+    console.error('Bhuvexa 3D model failed to initialise:', err);
+    if (loading) loading.style.display = 'none';
+    var errorEl = document.getElementById('modelError');
+    if (errorEl) errorEl.style.display = 'flex';
+  }
 })();
 </script>
 
