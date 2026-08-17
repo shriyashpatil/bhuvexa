@@ -58,6 +58,14 @@
   .fact .val{ font-family:'Bodoni Moda',serif; font-style:italic; font-size:22px; }
   @media (max-width:760px){ .facts-grid{ grid-template-columns:1fr 1fr; } }
 
+  .highlight-strip{ background:var(--cream-3); border-bottom:1px solid var(--line); }
+  .highlight-grid{ display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line); border:1px solid var(--line); }
+  .highlight-card{ background:var(--cream-3); padding:26px 30px; }
+  .highlight-card .hc-tag{ color:var(--ink-faint); display:block; margin-bottom:10px; }
+  .highlight-card h3{ font-family:'Bodoni Moda',serif; font-style:italic; font-weight:500; font-size:19px; margin:0 0 8px; }
+  .highlight-card p{ font-size:13.5px; color:var(--ink-soft); line-height:1.6; margin:0; }
+  @media (max-width:700px){ .highlight-grid{ grid-template-columns:1fr; } }
+
   .section-head{ margin-bottom:40px; max-width:64ch; }
   .section-head .kicker{ display:flex; align-items:center; gap:14px; color:var(--ink-faint); margin-bottom:16px; }
   .section-head .kicker::before{ content:""; width:34px; height:1px; background:var(--ink-faint); }
@@ -169,6 +177,23 @@
   </div>
 </section>
 
+<section class="highlight-strip" style="padding:0;">
+  <div class="wrap">
+    <div class="highlight-grid reveal">
+      <div class="highlight-card">
+        <span class="hc-tag mono">Sanctioned</span>
+        <h3>Town Planning Approved</h3>
+        <p>The layout is developed on a town planning approved plan — reviewed and sanctioned by the relevant planning authority.</p>
+      </div>
+      <div class="highlight-card">
+        <span class="hc-tag mono">Financing</span>
+        <h3>Bank Loan Facility Available</h3>
+        <p>Loan facilities are available from nationalized banks, all other banks, and also from pathsanstha — as per your documents.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section>
   <div class="wrap">
     <div class="section-head reveal">
@@ -196,7 +221,8 @@
       <div class="facility"><span class="dot"></span><span>Children's Play Area</span></div>
       <div class="facility"><span class="dot"></span><span>Security Watchman</span></div>
       <div class="facility"><span class="dot"></span><span>Landscaped Garden</span></div>
-      <div class="facility"><span class="dot"></span><span>Approved Layout</span></div>
+      <div class="facility"><span class="dot"></span><span>Town Planning Approved</span></div>
+      <div class="facility"><span class="dot"></span><span>Bank Loan Facility Available</span></div>
     </div>
   </div>
 </section>
