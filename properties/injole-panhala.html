@@ -141,6 +141,22 @@
   .model-error strong{ color:var(--paper-soft); font-family:'Bodoni Moda',serif; font-style:italic; font-size:18px; font-weight:500; }
   .model-error span{ font-size:12.5px; line-height:1.6; max-width:42ch; }
   .model-caption{ font-size:13px; color:var(--ink-soft); line-height:1.6; margin-top:16px; max-width:60ch; }
+
+  /* ---------- whatsapp fab ---------- */
+  .wa-fab{ position:fixed; right:22px; bottom:22px; z-index:500; width:58px; height:58px; border-radius:50%; background:#25D366; display:flex; align-items:center; justify-content:center; box-shadow:0 10px 30px rgba(5,25,54,0.28), 0 2px 8px rgba(0,0,0,0.16); transition:transform .25s var(--ease), box-shadow .25s ease; }
+  .wa-fab:hover{ transform:translateY(-3px) scale(1.05); box-shadow:0 14px 34px rgba(5,25,54,0.34); }
+  .wa-fab svg{ width:29px; height:29px; position:relative; z-index:1; }
+  .wa-fab-ping{ position:absolute; inset:0; border-radius:50%; background:#25D366; opacity:0.55; animation:waPing 2.6s ease-out infinite; }
+  @keyframes waPing{ 0%{ transform:scale(1); opacity:0.5; } 100%{ transform:scale(1.7); opacity:0; } }
+  @media (max-width:600px){ .wa-fab{ right:16px; bottom:16px; width:52px; height:52px; } .wa-fab svg{ width:26px; height:26px; } }
+
+  /* ---------- interactive site plan ---------- */
+  .site-plot{ cursor:default; }
+  .site-plot.available{ cursor:pointer; }
+  .site-plot.available rect, .site-plot.available polygon{ transition:filter .18s ease, transform .18s ease; transform-origin:center; transform-box:fill-box; }
+  .site-plot.available:hover rect, .site-plot.available:hover polygon{ filter:brightness(0.94); }
+  .site-plot.sold rect, .site-plot.sold polygon{ fill:#DAD3C4 !important; }
+  .site-plot.sold .sp-label, .site-plot.sold .sp-num{ fill:rgba(5,25,54,0.34) !important; }
 </style>
 </head>
 <body>
@@ -275,10 +291,11 @@
     <div class="section-head reveal">
       <div class="kicker mono">Site plan</div>
       <h2>Master layout — <em>30 plots across 6 acres</em></h2>
+      <p style="margin-top:14px; font-size:14px; color:var(--ink-soft); line-height:1.6;">14 of 30 plots are already sold. Only bungalow plots (15–30) remain available — tap or click any available plot below to enquire on WhatsApp.</p>
     </div>
     <div class="siteplan-card reveal">
       <div class="siteplan-svg-wrap">
-        <svg viewBox="0 0 920 530" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Injole Panhala master layout plan showing 30 numbered plots, shared garden, internal roads and the Rakshi-Ghungur Road boundary">
+        <svg id="sitePlanSvg" viewBox="0 0 920 530" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Injole Panhala master layout plan showing 30 numbered plots with sold and available status, shared garden, internal roads and the Rakshi-Ghungur Road boundary">
           <rect x="0" y="0" width="920" height="530" fill="#F8F0E8"/>
 
           <!-- internal roads -->
@@ -292,130 +309,190 @@
           <text x="758" y="240" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="8.5" letter-spacing="0.1em" fill="#F8F0E8">OPEN SPACE</text>
           <text x="758" y="254" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="8.5" letter-spacing="0.1em" fill="#F8F0E8">GARDEN</text>
 
-          <!-- plot grid: bungalow row 22-30 -->
-          <rect x="60.0" y="40.0" width="88.0" height="90.0" fill="#FFFFFF" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
-          <text x="104.0" y="79.0" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.5" letter-spacing="0.09em" fill="rgba(5,25,54,0.42)">BUNGALOW</text>
-          <text x="104.0" y="105.0" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="#051936">22</text>
+          <!-- plot grid: bungalow row 22-30 (available) -->
+          <g class="site-plot available" data-plot="22" data-type="bungalow" tabindex="0" role="button" aria-label="Bungalow plot 22 — available, click to enquire on WhatsApp">
+            <rect x="60.0" y="40.0" width="88.0" height="90.0" fill="#FFFFFF" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
+            <text class="sp-label" x="104.0" y="79.0" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.2" letter-spacing="0.08em" fill="#3F7A56">AVAILABLE</text>
+            <text class="sp-num" x="104.0" y="105.0" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="#051936">22</text>
+          </g>
 
-          <rect x="148.0" y="40.0" width="88.0" height="90.0" fill="#FFFFFF" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
-          <text x="192.0" y="79.0" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.5" letter-spacing="0.09em" fill="rgba(5,25,54,0.42)">BUNGALOW</text>
-          <text x="192.0" y="105.0" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="#051936">23</text>
+          <g class="site-plot available" data-plot="23" data-type="bungalow" tabindex="0" role="button" aria-label="Bungalow plot 23 — available, click to enquire on WhatsApp">
+            <rect x="148.0" y="40.0" width="88.0" height="90.0" fill="#FFFFFF" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
+            <text class="sp-label" x="192.0" y="79.0" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.2" letter-spacing="0.08em" fill="#3F7A56">AVAILABLE</text>
+            <text class="sp-num" x="192.0" y="105.0" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="#051936">23</text>
+          </g>
 
-          <rect x="236.0" y="40.0" width="88.0" height="90.0" fill="#FFFFFF" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
-          <text x="280.0" y="79.0" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.5" letter-spacing="0.09em" fill="rgba(5,25,54,0.42)">BUNGALOW</text>
-          <text x="280.0" y="105.0" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="#051936">24</text>
+          <g class="site-plot available" data-plot="24" data-type="bungalow" tabindex="0" role="button" aria-label="Bungalow plot 24 — available, click to enquire on WhatsApp">
+            <rect x="236.0" y="40.0" width="88.0" height="90.0" fill="#FFFFFF" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
+            <text class="sp-label" x="280.0" y="79.0" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.2" letter-spacing="0.08em" fill="#3F7A56">AVAILABLE</text>
+            <text class="sp-num" x="280.0" y="105.0" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="#051936">24</text>
+          </g>
 
-          <rect x="324.0" y="40.0" width="88.0" height="90.0" fill="#FFFFFF" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
-          <text x="368.0" y="79.0" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.5" letter-spacing="0.09em" fill="rgba(5,25,54,0.42)">BUNGALOW</text>
-          <text x="368.0" y="105.0" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="#051936">25</text>
+          <g class="site-plot available" data-plot="25" data-type="bungalow" tabindex="0" role="button" aria-label="Bungalow plot 25 — available, click to enquire on WhatsApp">
+            <rect x="324.0" y="40.0" width="88.0" height="90.0" fill="#FFFFFF" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
+            <text class="sp-label" x="368.0" y="79.0" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.2" letter-spacing="0.08em" fill="#3F7A56">AVAILABLE</text>
+            <text class="sp-num" x="368.0" y="105.0" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="#051936">25</text>
+          </g>
 
-          <rect x="412.0" y="40.0" width="88.0" height="90.0" fill="#FFFFFF" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
-          <text x="456.0" y="79.0" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.5" letter-spacing="0.09em" fill="rgba(5,25,54,0.42)">BUNGALOW</text>
-          <text x="456.0" y="105.0" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="#051936">26</text>
+          <g class="site-plot available" data-plot="26" data-type="bungalow" tabindex="0" role="button" aria-label="Bungalow plot 26 — available, click to enquire on WhatsApp">
+            <rect x="412.0" y="40.0" width="88.0" height="90.0" fill="#FFFFFF" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
+            <text class="sp-label" x="456.0" y="79.0" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.2" letter-spacing="0.08em" fill="#3F7A56">AVAILABLE</text>
+            <text class="sp-num" x="456.0" y="105.0" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="#051936">26</text>
+          </g>
 
-          <rect x="500.0" y="40.0" width="88.0" height="90.0" fill="#FFFFFF" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
-          <text x="544.0" y="79.0" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.5" letter-spacing="0.09em" fill="rgba(5,25,54,0.42)">BUNGALOW</text>
-          <text x="544.0" y="105.0" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="#051936">27</text>
+          <g class="site-plot available" data-plot="27" data-type="bungalow" tabindex="0" role="button" aria-label="Bungalow plot 27 — available, click to enquire on WhatsApp">
+            <rect x="500.0" y="40.0" width="88.0" height="90.0" fill="#FFFFFF" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
+            <text class="sp-label" x="544.0" y="79.0" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.2" letter-spacing="0.08em" fill="#3F7A56">AVAILABLE</text>
+            <text class="sp-num" x="544.0" y="105.0" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="#051936">27</text>
+          </g>
 
-          <rect x="588.0" y="40.0" width="88.0" height="90.0" fill="#FFFFFF" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
-          <text x="632.0" y="79.0" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.5" letter-spacing="0.09em" fill="rgba(5,25,54,0.42)">BUNGALOW</text>
-          <text x="632.0" y="105.0" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="#051936">28</text>
+          <g class="site-plot available" data-plot="28" data-type="bungalow" tabindex="0" role="button" aria-label="Bungalow plot 28 — available, click to enquire on WhatsApp">
+            <rect x="588.0" y="40.0" width="88.0" height="90.0" fill="#FFFFFF" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
+            <text class="sp-label" x="632.0" y="79.0" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.2" letter-spacing="0.08em" fill="#3F7A56">AVAILABLE</text>
+            <text class="sp-num" x="632.0" y="105.0" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="#051936">28</text>
+          </g>
 
-          <rect x="676.0" y="40.0" width="88.0" height="90.0" fill="#FFFFFF" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
-          <text x="720.0" y="79.0" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.5" letter-spacing="0.09em" fill="rgba(5,25,54,0.42)">BUNGALOW</text>
-          <text x="720.0" y="105.0" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="#051936">29</text>
+          <g class="site-plot available" data-plot="29" data-type="bungalow" tabindex="0" role="button" aria-label="Bungalow plot 29 — available, click to enquire on WhatsApp">
+            <rect x="676.0" y="40.0" width="88.0" height="90.0" fill="#FFFFFF" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
+            <text class="sp-label" x="720.0" y="79.0" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.2" letter-spacing="0.08em" fill="#3F7A56">AVAILABLE</text>
+            <text class="sp-num" x="720.0" y="105.0" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="#051936">29</text>
+          </g>
 
-          <rect x="764.0" y="40.0" width="88.0" height="90.0" fill="#FFFFFF" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
-          <text x="808.0" y="79.0" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.5" letter-spacing="0.09em" fill="rgba(5,25,54,0.42)">BUNGALOW</text>
-          <text x="808.0" y="105.0" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="#051936">30</text>
+          <g class="site-plot available" data-plot="30" data-type="bungalow" tabindex="0" role="button" aria-label="Bungalow plot 30 — available, click to enquire on WhatsApp">
+            <rect x="764.0" y="40.0" width="88.0" height="90.0" fill="#FFFFFF" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
+            <text class="sp-label" x="808.0" y="79.0" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.2" letter-spacing="0.08em" fill="#3F7A56">AVAILABLE</text>
+            <text class="sp-num" x="808.0" y="105.0" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="#051936">30</text>
+          </g>
 
-          <!-- bungalow row 21-15 -->
-          <rect x="60.0" y="156.0" width="88.0" height="90.0" fill="#FFFFFF" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
-          <text x="104.0" y="195.0" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.5" letter-spacing="0.09em" fill="rgba(5,25,54,0.42)">BUNGALOW</text>
-          <text x="104.0" y="221.0" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="#051936">21</text>
+          <!-- bungalow row 21-15 (available) -->
+          <g class="site-plot available" data-plot="21" data-type="bungalow" tabindex="0" role="button" aria-label="Bungalow plot 21 — available, click to enquire on WhatsApp">
+            <rect x="60.0" y="156.0" width="88.0" height="90.0" fill="#FFFFFF" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
+            <text class="sp-label" x="104.0" y="195.0" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.2" letter-spacing="0.08em" fill="#3F7A56">AVAILABLE</text>
+            <text class="sp-num" x="104.0" y="221.0" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="#051936">21</text>
+          </g>
 
-          <rect x="148.0" y="156.0" width="88.0" height="90.0" fill="#FFFFFF" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
-          <text x="192.0" y="195.0" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.5" letter-spacing="0.09em" fill="rgba(5,25,54,0.42)">BUNGALOW</text>
-          <text x="192.0" y="221.0" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="#051936">20</text>
+          <g class="site-plot available" data-plot="20" data-type="bungalow" tabindex="0" role="button" aria-label="Bungalow plot 20 — available, click to enquire on WhatsApp">
+            <rect x="148.0" y="156.0" width="88.0" height="90.0" fill="#FFFFFF" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
+            <text class="sp-label" x="192.0" y="195.0" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.2" letter-spacing="0.08em" fill="#3F7A56">AVAILABLE</text>
+            <text class="sp-num" x="192.0" y="221.0" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="#051936">20</text>
+          </g>
 
-          <rect x="236.0" y="156.0" width="88.0" height="90.0" fill="#FFFFFF" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
-          <text x="280.0" y="195.0" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.5" letter-spacing="0.09em" fill="rgba(5,25,54,0.42)">BUNGALOW</text>
-          <text x="280.0" y="221.0" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="#051936">19</text>
+          <g class="site-plot available" data-plot="19" data-type="bungalow" tabindex="0" role="button" aria-label="Bungalow plot 19 — available, click to enquire on WhatsApp">
+            <rect x="236.0" y="156.0" width="88.0" height="90.0" fill="#FFFFFF" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
+            <text class="sp-label" x="280.0" y="195.0" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.2" letter-spacing="0.08em" fill="#3F7A56">AVAILABLE</text>
+            <text class="sp-num" x="280.0" y="221.0" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="#051936">19</text>
+          </g>
 
-          <rect x="324.0" y="156.0" width="88.0" height="90.0" fill="#FFFFFF" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
-          <text x="368.0" y="195.0" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.5" letter-spacing="0.09em" fill="rgba(5,25,54,0.42)">BUNGALOW</text>
-          <text x="368.0" y="221.0" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="#051936">18</text>
+          <g class="site-plot available" data-plot="18" data-type="bungalow" tabindex="0" role="button" aria-label="Bungalow plot 18 — available, click to enquire on WhatsApp">
+            <rect x="324.0" y="156.0" width="88.0" height="90.0" fill="#FFFFFF" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
+            <text class="sp-label" x="368.0" y="195.0" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.2" letter-spacing="0.08em" fill="#3F7A56">AVAILABLE</text>
+            <text class="sp-num" x="368.0" y="221.0" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="#051936">18</text>
+          </g>
 
-          <rect x="412.0" y="156.0" width="88.0" height="90.0" fill="#FFFFFF" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
-          <text x="456.0" y="195.0" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.5" letter-spacing="0.09em" fill="rgba(5,25,54,0.42)">BUNGALOW</text>
-          <text x="456.0" y="221.0" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="#051936">17</text>
+          <g class="site-plot available" data-plot="17" data-type="bungalow" tabindex="0" role="button" aria-label="Bungalow plot 17 — available, click to enquire on WhatsApp">
+            <rect x="412.0" y="156.0" width="88.0" height="90.0" fill="#FFFFFF" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
+            <text class="sp-label" x="456.0" y="195.0" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.2" letter-spacing="0.08em" fill="#3F7A56">AVAILABLE</text>
+            <text class="sp-num" x="456.0" y="221.0" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="#051936">17</text>
+          </g>
 
-          <rect x="500.0" y="156.0" width="88.0" height="90.0" fill="#FFFFFF" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
-          <text x="544.0" y="195.0" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.5" letter-spacing="0.09em" fill="rgba(5,25,54,0.42)">BUNGALOW</text>
-          <text x="544.0" y="221.0" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="#051936">16</text>
+          <g class="site-plot available" data-plot="16" data-type="bungalow" tabindex="0" role="button" aria-label="Bungalow plot 16 — available, click to enquire on WhatsApp">
+            <rect x="500.0" y="156.0" width="88.0" height="90.0" fill="#FFFFFF" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
+            <text class="sp-label" x="544.0" y="195.0" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.2" letter-spacing="0.08em" fill="#3F7A56">AVAILABLE</text>
+            <text class="sp-num" x="544.0" y="221.0" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="#051936">16</text>
+          </g>
 
-          <rect x="588.0" y="156.0" width="88.0" height="90.0" fill="#FFFFFF" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
-          <text x="632.0" y="195.0" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.5" letter-spacing="0.09em" fill="rgba(5,25,54,0.42)">BUNGALOW</text>
-          <text x="632.0" y="221.0" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="#051936">15</text>
+          <g class="site-plot available" data-plot="15" data-type="bungalow" tabindex="0" role="button" aria-label="Bungalow plot 15 — available, click to enquire on WhatsApp">
+            <rect x="588.0" y="156.0" width="88.0" height="90.0" fill="#FFFFFF" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
+            <text class="sp-label" x="632.0" y="195.0" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.2" letter-spacing="0.08em" fill="#3F7A56">AVAILABLE</text>
+            <text class="sp-num" x="632.0" y="221.0" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="#051936">15</text>
+          </g>
 
-          <!-- plot row 08-14 -->
-          <rect x="60.0" y="246.0" width="88.0" height="90.0" fill="#EADCC8" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
-          <text x="104.0" y="285.0" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.5" letter-spacing="0.09em" fill="rgba(5,25,54,0.42)">PLOT</text>
-          <text x="104.0" y="311.0" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="#051936">08</text>
+          <!-- plot row 08-14 (sold) -->
+          <g class="site-plot sold" data-plot="08" data-type="plot">
+            <rect x="60.0" y="246.0" width="88.0" height="90.0" fill="#DAD3C4" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
+            <text class="sp-label" x="104.0" y="285.0" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.2" letter-spacing="0.08em" fill="rgba(5,25,54,0.4)">SOLD</text>
+            <text class="sp-num" x="104.0" y="311.0" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="rgba(5,25,54,0.34)">08</text>
+          </g>
 
-          <rect x="148.0" y="246.0" width="88.0" height="90.0" fill="#EADCC8" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
-          <text x="192.0" y="285.0" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.5" letter-spacing="0.09em" fill="rgba(5,25,54,0.42)">PLOT</text>
-          <text x="192.0" y="311.0" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="#051936">09</text>
+          <g class="site-plot sold" data-plot="09" data-type="plot">
+            <rect x="148.0" y="246.0" width="88.0" height="90.0" fill="#DAD3C4" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
+            <text class="sp-label" x="192.0" y="285.0" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.2" letter-spacing="0.08em" fill="rgba(5,25,54,0.4)">SOLD</text>
+            <text class="sp-num" x="192.0" y="311.0" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="rgba(5,25,54,0.34)">09</text>
+          </g>
 
-          <rect x="236.0" y="246.0" width="88.0" height="90.0" fill="#EADCC8" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
-          <text x="280.0" y="285.0" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.5" letter-spacing="0.09em" fill="rgba(5,25,54,0.42)">PLOT</text>
-          <text x="280.0" y="311.0" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="#051936">10</text>
+          <g class="site-plot sold" data-plot="10" data-type="plot">
+            <rect x="236.0" y="246.0" width="88.0" height="90.0" fill="#DAD3C4" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
+            <text class="sp-label" x="280.0" y="285.0" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.2" letter-spacing="0.08em" fill="rgba(5,25,54,0.4)">SOLD</text>
+            <text class="sp-num" x="280.0" y="311.0" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="rgba(5,25,54,0.34)">10</text>
+          </g>
 
-          <rect x="324.0" y="246.0" width="88.0" height="90.0" fill="#EADCC8" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
-          <text x="368.0" y="285.0" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.5" letter-spacing="0.09em" fill="rgba(5,25,54,0.42)">PLOT</text>
-          <text x="368.0" y="311.0" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="#051936">11</text>
+          <g class="site-plot sold" data-plot="11" data-type="plot">
+            <rect x="324.0" y="246.0" width="88.0" height="90.0" fill="#DAD3C4" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
+            <text class="sp-label" x="368.0" y="285.0" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.2" letter-spacing="0.08em" fill="rgba(5,25,54,0.4)">SOLD</text>
+            <text class="sp-num" x="368.0" y="311.0" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="rgba(5,25,54,0.34)">11</text>
+          </g>
 
-          <rect x="412.0" y="246.0" width="88.0" height="90.0" fill="#EADCC8" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
-          <text x="456.0" y="285.0" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.5" letter-spacing="0.09em" fill="rgba(5,25,54,0.42)">PLOT</text>
-          <text x="456.0" y="311.0" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="#051936">12</text>
+          <g class="site-plot sold" data-plot="12" data-type="plot">
+            <rect x="412.0" y="246.0" width="88.0" height="90.0" fill="#DAD3C4" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
+            <text class="sp-label" x="456.0" y="285.0" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.2" letter-spacing="0.08em" fill="rgba(5,25,54,0.4)">SOLD</text>
+            <text class="sp-num" x="456.0" y="311.0" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="rgba(5,25,54,0.34)">12</text>
+          </g>
 
-          <rect x="500.0" y="246.0" width="88.0" height="90.0" fill="#EADCC8" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
-          <text x="544.0" y="285.0" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.5" letter-spacing="0.09em" fill="rgba(5,25,54,0.42)">PLOT</text>
-          <text x="544.0" y="311.0" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="#051936">13</text>
+          <g class="site-plot sold" data-plot="13" data-type="plot">
+            <rect x="500.0" y="246.0" width="88.0" height="90.0" fill="#DAD3C4" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
+            <text class="sp-label" x="544.0" y="285.0" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.2" letter-spacing="0.08em" fill="rgba(5,25,54,0.4)">SOLD</text>
+            <text class="sp-num" x="544.0" y="311.0" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="rgba(5,25,54,0.34)">13</text>
+          </g>
 
-          <rect x="588.0" y="246.0" width="88.0" height="90.0" fill="#EADCC8" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
-          <text x="632.0" y="285.0" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.5" letter-spacing="0.09em" fill="rgba(5,25,54,0.42)">PLOT</text>
-          <text x="632.0" y="311.0" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="#051936">14</text>
+          <g class="site-plot sold" data-plot="14" data-type="plot">
+            <rect x="588.0" y="246.0" width="88.0" height="90.0" fill="#DAD3C4" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
+            <text class="sp-label" x="632.0" y="285.0" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.2" letter-spacing="0.08em" fill="rgba(5,25,54,0.4)">SOLD</text>
+            <text class="sp-num" x="632.0" y="311.0" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="rgba(5,25,54,0.34)">14</text>
+          </g>
 
-          <!-- plot row 07-03 -->
-          <rect x="60.0" y="362.0" width="88.0" height="90.0" fill="#EADCC8" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
-          <text x="104.0" y="401.0" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.5" letter-spacing="0.09em" fill="rgba(5,25,54,0.42)">PLOT</text>
-          <text x="104.0" y="427.0" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="#051936">07</text>
+          <!-- plot row 07-03 (sold) -->
+          <g class="site-plot sold" data-plot="07" data-type="plot">
+            <rect x="60.0" y="362.0" width="88.0" height="90.0" fill="#DAD3C4" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
+            <text class="sp-label" x="104.0" y="401.0" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.2" letter-spacing="0.08em" fill="rgba(5,25,54,0.4)">SOLD</text>
+            <text class="sp-num" x="104.0" y="427.0" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="rgba(5,25,54,0.34)">07</text>
+          </g>
 
-          <rect x="148.0" y="362.0" width="88.0" height="90.0" fill="#EADCC8" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
-          <text x="192.0" y="401.0" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.5" letter-spacing="0.09em" fill="rgba(5,25,54,0.42)">PLOT</text>
-          <text x="192.0" y="427.0" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="#051936">06</text>
+          <g class="site-plot sold" data-plot="06" data-type="plot">
+            <rect x="148.0" y="362.0" width="88.0" height="90.0" fill="#DAD3C4" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
+            <text class="sp-label" x="192.0" y="401.0" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.2" letter-spacing="0.08em" fill="rgba(5,25,54,0.4)">SOLD</text>
+            <text class="sp-num" x="192.0" y="427.0" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="rgba(5,25,54,0.34)">06</text>
+          </g>
 
-          <rect x="236.0" y="362.0" width="88.0" height="90.0" fill="#EADCC8" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
-          <text x="280.0" y="401.0" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.5" letter-spacing="0.09em" fill="rgba(5,25,54,0.42)">PLOT</text>
-          <text x="280.0" y="427.0" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="#051936">05</text>
+          <g class="site-plot sold" data-plot="05" data-type="plot">
+            <rect x="236.0" y="362.0" width="88.0" height="90.0" fill="#DAD3C4" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
+            <text class="sp-label" x="280.0" y="401.0" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.2" letter-spacing="0.08em" fill="rgba(5,25,54,0.4)">SOLD</text>
+            <text class="sp-num" x="280.0" y="427.0" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="rgba(5,25,54,0.34)">05</text>
+          </g>
 
-          <rect x="324.0" y="362.0" width="88.0" height="90.0" fill="#EADCC8" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
-          <text x="368.0" y="401.0" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.5" letter-spacing="0.09em" fill="rgba(5,25,54,0.42)">PLOT</text>
-          <text x="368.0" y="427.0" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="#051936">04</text>
+          <g class="site-plot sold" data-plot="04" data-type="plot">
+            <rect x="324.0" y="362.0" width="88.0" height="90.0" fill="#DAD3C4" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
+            <text class="sp-label" x="368.0" y="401.0" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.2" letter-spacing="0.08em" fill="rgba(5,25,54,0.4)">SOLD</text>
+            <text class="sp-num" x="368.0" y="427.0" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="rgba(5,25,54,0.34)">04</text>
+          </g>
 
-          <rect x="412.0" y="362.0" width="88.0" height="90.0" fill="#EADCC8" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
-          <text x="456.0" y="401.0" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.5" letter-spacing="0.09em" fill="rgba(5,25,54,0.42)">PLOT</text>
-          <text x="456.0" y="427.0" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="#051936">03</text>
+          <g class="site-plot sold" data-plot="03" data-type="plot">
+            <rect x="412.0" y="362.0" width="88.0" height="90.0" fill="#DAD3C4" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
+            <text class="sp-label" x="456.0" y="401.0" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.2" letter-spacing="0.08em" fill="rgba(5,25,54,0.4)">SOLD</text>
+            <text class="sp-num" x="456.0" y="427.0" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="rgba(5,25,54,0.34)">03</text>
+          </g>
 
-          <!-- plot 02 & plot 01 (wide plots along boundary road) -->
-          <polygon points="500,362 720,362 660,452 500,452" fill="#EADCC8" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
-          <text x="577" y="398" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.5" letter-spacing="0.09em" fill="rgba(5,25,54,0.42)">PLOT</text>
-          <text x="577" y="423" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="#051936">02</text>
+          <!-- plot 02 & plot 01 (wide plots along boundary road, sold) -->
+          <g class="site-plot sold" data-plot="02" data-type="plot">
+            <polygon points="500,362 720,362 660,452 500,452" fill="#DAD3C4" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
+            <text class="sp-label" x="577" y="398" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.2" letter-spacing="0.08em" fill="rgba(5,25,54,0.4)">SOLD</text>
+            <text class="sp-num" x="577" y="423" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="rgba(5,25,54,0.34)">02</text>
+          </g>
 
-          <polygon points="720,362 860,362 800,452 660,452" fill="#EADCC8" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
-          <text x="735" y="398" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.5" letter-spacing="0.09em" fill="rgba(5,25,54,0.42)">PLOT</text>
-          <text x="735" y="423" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="#051936">01</text>
+          <g class="site-plot sold" data-plot="01" data-type="plot">
+            <polygon points="720,362 860,362 800,452 660,452" fill="#DAD3C4" stroke="rgba(5,25,54,0.3)" stroke-width="1.1"/>
+            <text class="sp-label" x="735" y="398" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="700" font-size="7.2" letter-spacing="0.08em" fill="rgba(5,25,54,0.4)">SOLD</text>
+            <text class="sp-num" x="735" y="423" text-anchor="middle" font-family="'Bodoni Moda', serif" font-style="italic" font-size="19" fill="rgba(5,25,54,0.34)">01</text>
+          </g>
 
           <!-- boundary road: Rakshi - Ghungur Road -->
           <polygon points="460,452 860,452 900,505 500,505" fill="#C1683F" opacity="0.16"/>
@@ -427,16 +504,34 @@
         </svg>
       </div>
       <div class="siteplan-legend">
-        <div class="li"><span class="sw" style="background:#FFFFFF; border:1.2px solid rgba(5,25,54,0.4);"></span>Bungalow plot</div>
-        <div class="li"><span class="sw" style="background:#EADCC8; border:1.2px solid rgba(5,25,54,0.4);"></span>Standard plot</div>
+        <div class="li"><span class="sw" style="background:#FFFFFF; border:1.2px solid #3F7A56;"></span>Available (bungalow plot) — click to enquire</div>
+        <div class="li"><span class="sw" style="background:#DAD3C4; border:1.2px solid rgba(5,25,54,0.4);"></span>Sold</div>
         <div class="li"><span class="sw" style="background:#7C8C67;"></span>Garden / open space</div>
         <div class="li"><span class="sw" style="background:#E4D6BE;"></span>Internal road</div>
         <div class="li"><span class="sw" style="background:#C1683F;"></span>Rakshi–Ghungur Road (boundary)</div>
       </div>
     </div>
-    <p class="model-caption reveal">An indicative redraw of the approved 30-plot layout — bungalow plots, standard plots, the shared garden, internal roads and the Rakshi–Ghungur Road boundary. For exact plot numbers, dimensions and availability, please confirm with us directly.</p>
+    <p class="model-caption reveal">An indicative redraw of the approved 30-plot layout, showing current availability. Plots 01–14 are sold; bungalow plots 15–30 remain available. For exact dimensions and pricing, please confirm with us directly.</p>
   </div>
 </section>
+
+<script>
+  (function(){
+    var svg = document.getElementById('sitePlanSvg');
+    if (!svg) return;
+    var WA_NUMBER = '919595371199';
+    function enquire(plotNum){
+      var msg = "Hi Bhuvexa, I'm interested in Bungalow Plot " + plotNum + " at Injole Panhala. Please share availability and pricing.";
+      window.open('https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(msg), '_blank', 'noopener');
+    }
+    svg.querySelectorAll('.site-plot.available').forEach(function(g){
+      g.addEventListener('click', function(){ enquire(g.getAttribute('data-plot')); });
+      g.addEventListener('keydown', function(e){
+        if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); enquire(g.getAttribute('data-plot')); }
+      });
+    });
+  })();
+</script>
 
 <section style="padding-top:0;">
   <div class="wrap">
@@ -799,6 +894,11 @@
   }
 })();
 </script>
+
+<a class="wa-fab" href="https://wa.me/919595371199?text=Hi%20Bhuvexa%2C%20I'm%20interested%20in%20the%20Injole%20Panhala%20-%20Relaxx%20Inn%20project.%20Please%20share%20more%20details." target="_blank" rel="noopener" aria-label="Chat with Bhuvexa on WhatsApp">
+  <span class="wa-fab-ping" aria-hidden="true"></span>
+  <svg viewBox="0 0 32 32" fill="#fff" aria-hidden="true"><path d="M16.004 3C9.383 3 4 8.373 4 14.99c0 2.334.653 4.52 1.785 6.39L4 29l7.86-1.75a11.9 11.9 0 0 0 4.144.744h.005c6.62 0 12.002-5.373 12.002-11.99C28.011 8.373 22.629 3 16.004 3zm0 21.8h-.004a9.83 9.83 0 0 1-5.007-1.37l-.359-.213-3.716.828.79-3.62-.234-.372a9.78 9.78 0 0 1-1.5-5.226C5.974 9.5 10.475 5 16.004 5c2.68 0 5.198 1.045 7.09 2.94a9.94 9.94 0 0 1 2.917 7.05c0 5.5-4.502 9.81-10.007 9.81zm5.5-7.34c-.301-.15-1.784-.88-2.06-.98-.276-.1-.478-.15-.679.15-.2.301-.78.98-.957 1.181-.176.2-.352.226-.653.075-.301-.15-1.27-.468-2.42-1.494-.895-.797-1.5-1.782-1.676-2.083-.176-.3-.019-.463.132-.613.135-.135.301-.352.452-.528.15-.176.2-.3.301-.5.1-.2.05-.376-.025-.527-.075-.15-.679-1.635-.93-2.24-.245-.588-.494-.508-.679-.518l-.579-.01c-.2 0-.527.075-.803.376-.276.301-1.054 1.03-1.054 2.512s1.08 2.914 1.23 3.115c.15.2 2.126 3.246 5.15 4.551.72.311 1.281.497 1.719.636.722.23 1.38.198 1.9.12.58-.087 1.784-.729 2.035-1.433.251-.703.251-1.306.176-1.432-.075-.125-.276-.2-.577-.35z"/></svg>
+</a>
 
 </body>
 </html>
